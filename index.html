@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'Oréal Routine Builder - Personalized Skincare</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* L'Oréal Brand Colors */
+            --loreal-black: #000000;
+            --loreal-gold: #D4AF37;
+            --loreal-white: #FFFFFF;
+            --loreal-gray: #F5F5F5;
+            --loreal-dark-gray: #333333;
+            --loreal-light-gold: #E8D4A0;
+            --loreal-hover: #C19A2E;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            color: var(--loreal-dark-gray);
+            line-height: 1.6;
+        }
+
+        /* RTL Support */
+        [dir="rtl"] {
+            direction: rtl;
+        }
+
+        [dir="rtl"] .product-grid {
+            direction: rtl;
+        }
+
+        [dir="rtl"] .chat-message {
+            text-align: right;
+        }
+
+        [dir="rtl"] .chat-message.user {
+            align-self: flex-end;
+        }
+
+        [dir="rtl"] .chat-message.assistant {
+            align-self: flex-start;
+        }
+
+        /* Header */
+        header {
+            background: var(--loreal-black);
+            color: var(--loreal-white);
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--loreal-gold);
+            margin-bottom: 0.3rem;
+        }
+
+        .tagline {
+            font-size: 0.95rem;
+            color: var(--loreal-light-gold);
+            font-weight: 400;
+        }
+
+        .rtl-toggle {
+            background: var(--loreal-gold);
+            color: var(--loreal-black);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .rtl-toggle:hover {
+            background: var(--loreal-hover);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        /* Controls Section */
+        .controls {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--loreal-gold);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--loreal-hover);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .category-filters {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 10px 20px;
+            background: var(--loreal-gray);
+            border: 2px solid transparent;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .category-btn:hover {
+            background: var(--loreal-light-gold);
+        }
+
+        .category-btn.active {
+            background: var(--loreal-gold);
+            color: white;
+            border-color: var(--loreal-hover);
+        }
+
+        /* Selected Products Section */
+        .selected-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            min-height: 120px;
+        }
+
+        .selected-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .selected-header h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--loreal-black);
+        }
+
+        .clear-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .clear-btn:hover {
+            background: #c82333;
+        }
+
+        .selected-products-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .selected-product-chip {
+            background: var(--loreal-light-gold);
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .remove-chip {
+            background: var(--loreal-black);
+            color: white;
+            border: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .empty-selection {
+            text-align: center;
+            color: #999;
+            padding: 2rem 0;
+            font-style: italic;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-card.selected {
+            border-color: var(--loreal-gold);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            background: var(--loreal-gray);
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-brand {
+            font-size: 0.85rem;
+            color: var(--loreal-gold);
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--loreal-black);
+            margin-bottom: 0.5rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .product-category {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .product-description {
+            font-size: 0.95rem;
+            color: var(--loreal-dark-gray);
+            line-height: 1.6;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--loreal-gray);
+            display: none;
+        }
+
+        .product-description.show {
+            display: block;
+        }
+
+        .show-description-btn {
+            background: var(--loreal-gray);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .show-description-btn:hover {
+            background: var(--loreal-light-gold);
+        }
+
+        .selected-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--loreal-gold);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: none;
+        }
+
+        .product-card.selected .selected-badge {
+            display: block;
+        }
+
+        /* Generate Button */
+        .generate-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, var(--loreal-gold), var(--loreal-hover));
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(212, 175, 55, 0.4);
+        }
+
+        .generate-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Chat Section */
+        .chat-section {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-header {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            color: var(--loreal-black);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--loreal-gold);
+        }
+
+        .chat-messages {
+            max-height: 500px;
+            overflow-y: auto;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: var(--loreal-gray);
+            border-radius: 8px;
+        }
+
+        .chat-message {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            max-width: 80%;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chat-message.assistant {
+            background: white;
+            border-left: 4px solid var(--loreal-gold);
+            align-self: flex-start;
+        }
+
+        .chat-message.user {
+            background: var(--loreal-light-gold);
+            align-self: flex-end;
+            margin-left: auto;
+        }
+
+        .chat-message.loading {
+            background: white;
+            border-left: 4px solid var(--loreal-gold);
+        }
+
+        .loading-dots {
+            display: inline-flex;
+            gap: 5px;
+        }
+
+        .loading-dots span {
+            width: 8px;
+            height: 8px;
+            background: var(--loreal-gold);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+
+        .loading-dots span:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .loading-dots span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes bounce {
+            0%, 80%, 100% {
+                transform: scale(0);
+            }
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        .chat-input-container {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid var(--loreal-gold);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--loreal-hover);
+        }
+
+        .send-btn {
+            background: var(--loreal-gold);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .send-btn:hover {
+            background: var(--loreal-hover);
+        }
+
+        .send-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Empty State */
+        .empty-chat {
+            text-align: center;
+            padding: 3rem;
+            color: #999;
+        }
+
+        .empty-chat-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--loreal-black);
+            color: var(--loreal-white);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--loreal-gold);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--loreal-light-gold);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-filters {
+                flex-direction: column;
+            }
+
+            .chat-message {
+                max-width: 95%;
+            }
+
+            .chat-input-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo-section">
+                <h1>L'Oréal Routine Builder</h1>
+                <p class="tagline">Personalized Skincare, Powered by AI</p>
+            </div>
+            <button class="rtl-toggle" onclick="toggleRTL()">Toggle RTL</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Controls -->
+        <div class="controls">
+            <input 
+                type="text" 
+                class="search-bar" 
+                id="searchBar" 
+                placeholder="Search products by name or keyword..."
+            >
+            <div class="category-filters" id="categoryFilters">
+                <button class="category-btn active" data-category="all">All Products</button>
+                <button class="category-btn" data-category="Cleanser">Cleansers</button>
+                <button class="category-btn" data-category="Moisturizer">Moisturizers</button>
+                <button class="category-btn" data-category="Serum">Serums</button>
+                <button class="category-btn" data-category="Treatment">Treatments</button>
+                <button class="category-btn" data-category="Sunscreen">Sunscreen</button>
+            </div>
+        </div>
+
+        <!-- Selected Products -->
+        <div class="selected-section">
+            <div class="selected-header">
+                <h2>Selected Products (<span id="selectedCount">0</span>)</h2>
+                <button class="clear-btn" id="clearBtn" style="display: none;">Clear All</button>
+            </div>
+            <div class="selected-products-list" id="selectedProductsList">
+                <div class="empty-selection">Select products to build your personalized routine</div>
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="product-grid" id="productGrid"></div>
+
+        <!-- Generate Button -->
+        <div class="generate-section">
+            <button class="generate-btn" id="generateBtn" disabled>
+                Generate Personalized Routine
+            </button>
+        </div>
+
+        <!-- Chat Section -->
+        <div class="chat-section">
+            <h2 class="chat-header">About Your Routine</h2>
+            <div class="chat-messages" id="chatMessages">
+                <div class="empty-chat">
+                    <div class="empty-chat-icon">💬</div>
+                    <p>Generate a routine to start chatting about your personalized skincare!</p>
+                </div>
+            </div>
+            <div class="chat-input-container">
+                <input 
+                    type="text" 
+                    class="chat-input" 
+                    id="chatInput" 
+                    placeholder="Ask a follow-up question about your routine..."
+                    disabled
+                >
+                <button class="send-btn" id="sendBtn" disabled>Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Use</a>
+            <a href="#">Contact</a>
+        </div>
+        <p>&copy; 2025 L'Oréal. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Configuration
+        const CLOUDFLARE_WORKER_URL = 'https://loreal-chatbot-proxy.josefuentes2013-jf.workers.dev';
+
+        // Product Database
+        const products = [
+            {
+                id: 1,
+                brand: 'CeraVe',
+                name: 'Hydrating Facial Cleanser',
+                category: 'Cleanser',
+                description: 'A gentle, non-foaming cleanser with hyaluronic acid and ceramides that hydrates and cleanses the skin without stripping its natural moisture barrier. Ideal for normal to dry skin types.',
+                image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop'
+            },
+            {
+                id: 2,
+                brand: 'CeraVe',
+                name: 'Foaming Facial Cleanser',
+                category: 'Cleanser',
+                description: 'A refreshing gel cleanser that removes excess oil and dirt without disrupting the protective skin barrier. Contains ceramides and niacinamide. Perfect for normal to oily skin.',
+                image: 'https://images.unsplash.com/photo-1570554886111-e80fcca6a029?w=400&h=400&fit=crop'
+            },
+            {
+                id: 3,
+                brand: 'CeraVe',
+                name: 'Moisturizing Cream',
+                category: 'Moisturizer',
+                description: 'Rich, non-greasy moisturizing cream with a unique MVE delivery system that provides 24-hour hydration. Contains ceramides and hyaluronic acid for long-lasting moisture.',
+                image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop'
+            },
+            {
+                id: 4,
+                brand: 'CeraVe',
+                name: 'Daily Moisturizing Lotion',
+                category: 'Moisturizer',
+                description: 'Lightweight, oil-free lotion that provides all-day hydration without feeling heavy or greasy. Essential ceramides and hyaluronic acid help restore and maintain the skin barrier.',
+                image: 'https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=400&h=400&fit=crop'
+            },
+            {
+                id: 5,
+                brand: 'CeraVe',
+                name: 'Skin Renewing Retinol Serum',
+                category: 'Serum',
+                description: 'Anti-aging serum with encapsulated retinol to minimize the appearance of pores and improve skin texture. Ceramides and niacinamide help maintain the skin barrier while retinol works overnight.',
+                image: 'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=400&h=400&fit=crop'
+            },
+            {
+                id: 6,
+                brand: 'CeraVe',
+                name: 'Vitamin C Serum',
+                category: 'Serum',
+                description: 'Brightening serum with 10% pure vitamin C to help improve skin tone and reduce the appearance of dark spots. Hyaluronic acid provides hydration while ceramides support the skin barrier.',
+                image: 'https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=400&h=400&fit=crop'
+            },
+            {
+                id: 7,
+                brand: 'CeraVe',
+                name: 'Resurfacing Retinol Serum',
+                category: 'Treatment',
+                description: 'Post-acne marks and pores treatment with encapsulated retinol, licorice root extract, and niacinamide. Helps refine skin texture and reduce the appearance of post-acne marks.',
+                image: 'https://images.unsplash.com/photo-1612817288484-6f916006741a?w=400&h=400&fit=crop'
+            },
+            {
+                id: 8,
+                brand: 'CeraVe',
+                name: 'Acne Foaming Cream Cleanser',
+                category: 'Treatment',
+                description: '4% benzoyl peroxide acne treatment cleanser that clears acne and helps prevent new breakouts. Contains hyaluronic acid and niacinamide to help maintain the skin barrier.',
+                image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop'
+            },
+            {
+                id: 9,
+                brand: 'CeraVe',
+                name: 'AM Facial Moisturizing Lotion SPF 30',
+                category: 'Sunscreen',
+                description: 'Lightweight daily moisturizer with broad spectrum SPF 30 protection. Contains ceramides and hyaluronic acid to hydrate while protecting skin from harmful UV rays.',
+                image: 'https://images.unsplash.com/photo-1556228724-8fc1b7c9d34e?w=400&h=400&fit=crop'
+            },
+            {
+                id: 10,
+                brand: 'L\'Oréal Paris',
+                name: 'Revitalift Hyaluronic Acid Serum',
+                category: 'Serum',
+                description: 'Concentrated hyaluronic acid serum that plumps skin and reduces the appearance of fine lines and wrinkles. Provides intense hydration for smoother, more youthful-looking skin.',
+                image: 'https://images.unsplash.com/photo-1620916297067-641b1681a09b?w=400&h=400&fit=crop'
+            },
+            {
+                id: 11,
+                brand: 'L\'Oréal Paris',
+                name: 'Revitalift Night Cream',
+                category: 'Moisturizer',
+                description: 'Anti-aging night cream with pro-retinol and centella asiatica that works overnight to reduce wrinkles and firm skin. Wake up to smoother, more radiant skin.',
+                image: 'https://images.unsplash.com/photo-1556228994-d36c41d2b26b?w=400&h=400&fit=crop'
+            },
+            {
+                id: 12,
+                brand: 'La Roche-Posay',
+                name: 'Anthelios Mineral Sunscreen SPF 50',
+                category: 'Sunscreen',
+                description: '100% mineral sunscreen with titanium dioxide that provides broad spectrum SPF 50 protection. Gentle formula suitable for sensitive skin, leaves no white cast.',
+                image: 'https://images.unsplash.com/photo-1556228724-7ae7eba25a49?w=400&h=400&fit=crop'
+            }
+        ];
+
+        // State Management
+        let selectedProducts = [];
+        let conversationHistory = [];
+        let currentCategory = 'all';
+        let searchQuery = '';
+
+        // DOM Elements
+        const productGrid = document.getElementById('productGrid');
+        const selectedProductsList = document.getElementById('selectedProductsList');
+        const selectedCount = document.getElementById('selectedCount');
+        const clearBtn = document.getElementById('clearBtn');
+        const generateBtn = document.getElementById('generateBtn');
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const searchBar = document.getElementById('searchBar');
+        const categoryFilters = document.getElementById('categoryFilters');
+
+        // Initialize
+        function init() {
+            loadSelectedProducts();
+            renderProducts();
+            setupEventListeners();
+            updateSelectedDisplay();
+        }
+
+        // Load selected products from localStorage
+        function loadSelectedProducts() {
+            const saved = localStorage.getItem('selectedProducts');
+            if (saved) {
+                selectedProducts = JSON.parse(saved);
+            }
+        }
+
+        // Save selected products to localStorage
+        function saveSelectedProducts() {
+            localStorage.setItem('selectedProducts', JSON.stringify(selectedProducts));
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            generateBtn.addEventListener('click', generateRoutine);
+            sendBtn.addEventListener('click', sendMessage);
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendMessage();
+            });
+            clearBtn.addEventListener('click', clearAllProducts);
+            searchBar.addEventListener('input', handleSearch);
+            
+            // Category filters
+            categoryFilters.addEventListener('click', (e) => {
+                if (e.target.classList.contains('category-btn')) {
+                    document.querySelectorAll('.category-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    e.target.classList.add('active');
+                    currentCategory = e.target.dataset.category;
+                    renderProducts();
+                }
+            });
+        }
+
+        // Handle search
+        function handleSearch(e) {
+            searchQuery = e.target.value.toLowerCase();
+            renderProducts();
+        }
+
+        // Filter products
+        function filterProducts() {
+            return products.filter(product => {
+                const matchesCategory = currentCategory === 'all' || product.category === currentCategory;
+                const matchesSearch = searchQuery === '' || 
+                    product.name.toLowerCase().includes(searchQuery) ||
+                    product.brand.toLowerCase().includes(searchQuery) ||
+                    product.category.toLowerCase().includes(searchQuery) ||
+                    product.description.toLowerCase().includes(searchQuery);
+                
+                return matchesCategory && matchesSearch;
+            });
+        }
+
+        // Render products
+        function renderProducts() {
+            const filteredProducts = filterProducts();
+            
+            if (filteredProducts.length === 0) {
+                productGrid.innerHTML = '<p style="text-align: center; grid-column: 1/-1; padding: 3rem; color: #999;">No products found matching your criteria.</p>';
+                return;
+            }
+
+            productGrid.innerHTML = filteredProducts.map(product => {
+                const isSelected = selectedProducts.some(p => p.id === product.id);
+                return `
+                    <div class="product-card ${isSelected ? 'selected' : ''}" data-id="${product.id}">
+                        <span class="selected-badge">✓ Selected</span>
+                        <img src="${product.image}" alt="${product.name}" class="product-image">
+                        <div class="product-info">
+                            <div class="product-brand">${product.brand}</div>
+                            <div class="product-name">${product.name}</div>
+                            <div class="product-category">${product.category}</div>
+                            <button class="show-description-btn" onclick="toggleDescription(event, ${product.id})">
+                                Show Description
+                            </button>
+                            <div class="product-description" id="desc-${product.id}">
+                                ${product.description}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Add click handlers
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('show-description-btn')) {
+                        toggleProductSelection(parseInt(card.dataset.id));
+                    }
+                });
+            });
+        }
+
+        // Toggle description
+        function toggleDescription(event, productId) {
+            event.stopPropagation();
+            const descElement = document.getElementById(`desc-${productId}`);
+            const btn = event.target;
+            
+            descElement.classList.toggle('show');
+            btn.textContent = descElement.classList.contains('show') ? 'Hide Description' : 'Show Description';
+        }
+
+        // Toggle product selection
+        function toggleProductSelection(productId) {
+            const product = products.find(p => p.id === productId);
+            const index = selectedProducts.findIndex(p => p.id === productId);
+
+            if (index > -1) {
+                selectedProducts.splice(index, 1);
+            } else {
+                selectedProducts.push(product);
+            }
+
+            saveSelectedProducts();
+            renderProducts();
+            updateSelectedDisplay();
+        }
+
+        // Update selected products display
+        function updateSelectedDisplay() {
+            selectedCount.textContent = selectedProducts.length;
+            
+            if (selectedProducts.length === 0) {
+                selectedProductsList.innerHTML = '<div class="empty-selection">Select products to build your personalized routine</div>';
+                clearBtn.style.display = 'none';
+                generateBtn.disabled = true;
+            } else {
+                selectedProductsList.innerHTML = selectedProducts.map(product => `
+                    <div class="selected-product-chip">
+                        ${product.name}
+                        <button class="remove-chip" onclick="removeProduct(${product.id})">×</button>
+                    </div>
+                `).join('');
+                clearBtn.style.display = 'block';
+                generateBtn.disabled = false;
+            }
+        }
+
+        // Remove single product
+        function removeProduct(productId) {
+            toggleProductSelection(productId);
+        }
+
+        // Clear all products
+        function clearAllProducts() {
+            if (confirm('Clear all selected products?')) {
+                selectedProducts = [];
+                saveSelectedProducts();
+                renderProducts();
+                updateSelectedDisplay();
+            }
+        }
+
+        // Generate routine with OpenAI
+        async function generateRoutine() {
+            if (selectedProducts.length === 0) return;
+
+            // Clear chat and disable controls
+            chatMessages.innerHTML = '';
+            generateBtn.disabled = true;
+            chatInput.disabled = true;
+            sendBtn.disabled = true;
+
+            // Show loading
+            addMessageToChat('assistant', '<div class="loading-dots"><span></span><span></span><span></span></div>', true);
+
+            // Prepare system message
+            const systemMessage = {
+                role: 'system',
+                content: 'You are a professional skincare consultant for L\'Oréal. Create personalized skincare routines based on the products the user has selected. Provide clear morning and evening routines, explain the benefits of each product, and answer any questions about skincare. Be friendly, knowledgeable, and helpful.'
+            };
+
+            // Prepare user message with selected products
+            const productList = selectedProducts.map(p => 
+                `${p.brand} ${p.name} (${p.category}): ${p.description}`
+            ).join('\n');
+
+            const userMessage = {
+                role: 'user',
+                content: `Please create a personalized skincare routine using these products I've selected:\n\n${productList}\n\nProvide a morning and evening routine with the order of application and key benefits.`
+            };
+
+            conversationHistory = [systemMessage, userMessage];
+
+            try {
+                const response = await fetch(CLOUDFLARE_WORKER_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: 'gpt-4o-mini',
+                        messages: conversationHistory,
+                        temperature: 0.7,
+                        max_tokens: 1000
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error.message || 'API Error');
+                }
+
+                const assistantMessage = data.choices[0].message.content;
+                
+                // Add assistant response to history
+                conversationHistory.push({
+                    role: 'assistant',
+                    content: assistantMessage
+                });
+
+                // Display response
+                chatMessages.innerHTML = '';
+                addMessageToChat('assistant', assistantMessage);
+
+                // Enable follow-up
+                chatInput.disabled = false;
+                sendBtn.disabled = false;
+                chatInput.focus();
+
+            } catch (error) {
+                console.error('Error generating routine:', error);
+                chatMessages.innerHTML = '';
+                addMessageToChat('assistant', 'Sorry, I encountered an error generating your routine. Please try again.');
+                generateBtn.disabled = false;
+            }
+        }
+
+        // Send follow-up message
+        async function sendMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+
+            // Add user message to chat
+            addMessageToChat('user', message);
+            chatInput.value = '';
+            chatInput.disabled = true;
+            sendBtn.disabled = true;
+
+            // Add to conversation history
+            conversationHistory.push({
+                role: 'user',
+                content: message
+            });
+
+            // Show loading
+            addMessageToChat('assistant', '<div class="loading-dots"><span></span><span></span><span></span></div>', true);
+
+            try {
+                const response = await fetch(CLOUDFLARE_WORKER_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: 'gpt-4o-mini',
+                        messages: conversationHistory,
+                        temperature: 0.7,
+                        max_tokens: 800
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error.message || 'API Error');
+                }
+
+                const assistantMessage = data.choices[0].message.content;
+                
+                // Add assistant response to history
+                conversationHistory.push({
+                    role: 'assistant',
+                    content: assistantMessage
+                });
+
+                // Remove loading and add response
+                const loadingMsg = document.querySelector('.chat-message.loading');
+                if (loadingMsg) loadingMsg.remove();
+                
+                addMessageToChat('assistant', assistantMessage);
+
+                // Re-enable input
+                chatInput.disabled = false;
+                sendBtn.disabled = false;
+                chatInput.focus();
+
+            } catch (error) {
+                console.error('Error sending message:', error);
+                const loadingMsg = document.querySelector('.chat-message.loading');
+                if (loadingMsg) loadingMsg.remove();
+                addMessageToChat('assistant', 'Sorry, I encountered an error. Please try again.');
+                chatInput.disabled = false;
+                sendBtn.disabled = false;
+            }
+        }
+
+        // Add message to chat
+        function addMessageToChat(role, content, isLoading = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${role}${isLoading ? ' loading' : ''}`;
+            messageDiv.innerHTML = content;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Toggle RTL
+        function toggleRTL() {
+            const html = document.documentElement;
+            const currentDir = html.getAttribute('dir');
+            html.setAttribute('dir', currentDir === 'rtl' ? 'ltr' : 'rtl');
+        }
+
+        // Initialize app
+        init();
+    </script>
+</body>
+</html>
